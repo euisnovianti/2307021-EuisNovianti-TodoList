@@ -1,53 +1,30 @@
 import { useState } from "react";
 
-const [judul, setJudul] = useState('');
+const TodoListForm = ({ addTodo }) => {
+  const [judul, setJudul] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
 
-  const handleSubmit = () => {
-    if (judul.trim() && deskripsi.trim()) {
-      onAddTodo({
-        id: Date.now(),
-        judul: judul,
-        deskripsi: deskripsi,
-        tanggal: new Date().toLocaleString('id-ID')
-      });
-      
-      setJudul('');
-      setDeskripsi('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (judul && deskripsi) {
+      addTodo({ id: Date.now(), judul, deskripsi });
+      setJudul(''); setDeskripsi('');
     }
   };
 
   return (
-    <div className="bg-teal-50 p-6 rounded border border-teal-300">
-      <div className="mb-3">
-        <label className="block text-teal-800 text-sm mb-1">Judul</label>
-        <input
-          type="text"
-          value={judul}
-          onChange={(e) => setJudul(e.target.value)}
-          className="w-full px-3 py-2 border border-teal-300 rounded bg-white focus:outline-none focus:border-teal-500"
-          placeholder="Judul kegiatan"
-        />
+    <form onSubmit={handleSubmit} className="card">
+      <h3>Tambah Tugas</h3>
+      <div style={{ marginBottom: '10px' }}>
+        <label>Judul:</label><br/>
+        <input style={{ width: '96%', padding: '8px' }} value={judul} onChange={(e) => setJudul(e.target.value)} required />
       </div>
-      
-      <div className="mb-3">
-        <label className="block text-teal-800 text-sm mb-1">Deskripsi</label>
-        <textarea
-          value={deskripsi}
-          onChange={(e) => setDeskripsi(e.target.value)}
-          className="w-full px-3 py-2 border border-teal-300 rounded bg-white focus:outline-none focus:border-teal-500"
-          placeholder="Deskripsi kegiatan"
-          rows="3"
-        />
+      <div style={{ marginBottom: '10px' }}>
+        <label>Deskripsi:</label><br/>
+        <textarea style={{ width: '96%', padding: '8px' }} value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} required />
       </div>
-      
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 transition"
-      >
-        Tambahkan
-      </button>
-    </div>
+      <button type="submit" className="btn-teal">Tambahkan</button>
+    </form>
   );
-
+};
 export default TodoListForm;
